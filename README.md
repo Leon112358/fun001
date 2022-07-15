@@ -14,6 +14,7 @@ git branch
 git branch -r
 git diff 8ee874de60cb11cbbd17043053c6f41b630fcfa7
 git push origin main // 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
+git config --global user.email leonhu.biz@gmail.com
 ```
 ## SSH
 ```
