@@ -16,6 +16,15 @@ const config = {root: __dirname};
 // listen to requests on port 8080.
 app.listen(8080);
 
+// record the metadata of incoming calls
+app.use((req, res, next) => {
+    console.log("Incoming request!");
+    console.log("path: " + req.path);
+    console.log("method: " + req.method);
+    console.log("ip: " + req.ip);
+    next();
+});
+
 // set up uris
 app.get("/", (req, res) =>{
     // get PST time.
@@ -86,7 +95,6 @@ function getShiChen(hours) {
 }
 
 // unknow uris?
-// THIS HAS TO BE IN THE LAST LINE!
 app.use((req, res) => {
     res.status(404).sendFile("./views/404.html", config);
 });
