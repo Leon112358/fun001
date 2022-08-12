@@ -1,5 +1,10 @@
 const express = require("express");
 const lunar = require("chinese-lunar-calendar");
+const morgan = require("morgan");
+
+// create an express app.
+const app = express();
+const config = {root: __dirname};
 const map = {
     0:"大安",
     1:"留连",
@@ -9,21 +14,12 @@ const map = {
     5:"空亡"
 };
 
-// create an express app.
-const app = express();
-const config = {root: __dirname};
-
 // listen to requests on port 8080.
 app.listen(8080);
 
-// record the metadata of incoming calls
-app.use((req, res, next) => {
-    console.log("Incoming request!");
-    console.log("path: " + req.path);
-    console.log("method: " + req.method);
-    console.log("ip: " + req.ip);
-    next();
-});
+// some setups
+app.use(morgan("combined"));
+app.use(express.static("css"));
 
 // set up uris
 app.get("/", (req, res) =>{
