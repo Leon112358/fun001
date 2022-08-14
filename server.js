@@ -1,10 +1,32 @@
+const config = {root: __dirname};
+
 const express = require("express");
 const lunar = require("chinese-lunar-calendar");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
+const Xiaoliuren = require("./db/xiaoliuren");
 
 // create an express app.
 const app = express();
-const config = {root: __dirname};
+
+// mongodb url.
+const dbUrl = "mongodb+srv://tellafortune:z6FmFw1yKmIhRR8b@leon001.hsdpbay.mongodb.net/decisions?retryWrites=true&w=majority";
+mongoose.connect(
+    dbUrl, 
+    {
+        useNewUrlParser: true, 
+        useUnifiedTopology: true
+    }
+)
+.then(() => {
+    console.log("Mongo DB connected!");
+
+    // listen to requests on port 8080.
+    // only starts the server when db is connected!
+    app.listen(8080);
+})
+.catch((error) => console.log(error));
+
 const map = {
     0:"大安",
     1:"留连",
@@ -13,9 +35,6 @@ const map = {
     4:"小吉",
     5:"空亡"
 };
-
-// listen to requests on port 8080.
-app.listen(8080);
 
 // some setups
 app.use(morgan("combined"));
@@ -42,7 +61,20 @@ app.get("/", (req, res) =>{
     console.log("The XiaoShi: " + date.getHours());
     index = count(lMonth + lDate + getShiChen(date.getHours()) - 2);
     console.log("The Xiao Liu Ren idex: " + index);
-    res.send("<h1>" + map[index] + "</h1>");
+
+    // store this attemp!
+    new Xiaoliuren({
+        result: index,
+        lunar_time: lunarDate
+    })
+    .save()
+    .then((result) => {
+        console.log(result);
+        res.send("<h1>" + map[index] + "</h1>");
+    })
+    .catch((error) => console.log(error));
+
+    
 });
 
 function count(count) {
