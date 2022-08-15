@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const dbUrl = "mongodb+srv://tellafortune:z6FmFw1yKmIhRR8b@leon001.hsdpbay.mongodb.net/decisions?retryWrites=true&w=majority";
 
 // define the schema and create a model for a piece of document.
 const Xiaoliuren = mongoose.model(
@@ -17,4 +18,4 @@ const Xiaoliuren = mongoose.model(
 );
 
 // export the model
-module.exports = Xiaoliuren;
+module.exports = {Xiaoliuren, dbUrl};
