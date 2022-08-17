@@ -13,7 +13,8 @@ const Xiaoliuren = mongoose.model(
         lunar_time: {
             type: Object,
             required: true
-        }
+        },
+        requester: String
     }, {timestamps: true})
 );
 
