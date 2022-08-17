@@ -1,3 +1,8 @@
 #leon, #requesterSubmit, #requesterLabel, #requester{
     font-size: 6em;
 }
+
+#requester {
+    background-color: blue;
+    color: white;
+}

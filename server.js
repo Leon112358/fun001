@@ -40,10 +40,10 @@ app.get("/", (req, res) => {
 
 app.post("/leon", (req, res) => {
     console.log("leon is calling.");
-    res.redirect(307, "/");
+    res.redirect(307, "/requester");
 })
 
-app.post("/", (req, res) =>{
+app.post("/requester", (req, res) =>{
     var requester = req.body.requester == undefined ? "leon" : req.body.requester;
 
     // calculates the lunar date.
