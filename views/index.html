@@ -1,12 +1,15 @@
 <html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
     <body>
         <form action="/" method="post">
-            <label for="requester">What's your name?</label>
+            <label id="requesterLabel" for="requester">What's your name?</label>
             <input id="requester" name="requester" type="text" required>
-            <button type="submit">Submit</button>
+            <button id="requesterSubmit" type="submit">Submit</button>
         </form>
         <form action="/leon" method="post">
-            <button type="submit">I am Leon</button>
+            <button id="leon" type="submit">I am Leon</button>
         </form>
     </body>
 </html>
