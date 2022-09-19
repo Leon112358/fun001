@@ -2,11 +2,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const {Xiaoliuren, dbUrl} = require("./db/xiaoliuren");
-const url = require('url');   
-
-// functions
-const {count, getShiChen, map, getLunarTime} = require("./helpers/xiaoliuren");
+const {_, dbUrl} = require("./db/xiaoliuren");
+const xiaoliurenRoutes = require("./routes/xiaoliuren");
 
 // create an express app.
 const app = express();
@@ -35,38 +32,12 @@ mongoose
 
 // set up uris
 app.get("/", (req, res) => {
-    res.status(404).sendFile("./views/index.html", config);
+    res.status(200).sendFile("./views/index.html", config);
 })
 
-app.post("/leon", (req, res) => {
-    console.log("leon is calling.");
-    res.redirect(307, "/requester");
-})
-
-app.post("/requester", (req, res) =>{
-    var requester = req.body.requester == undefined ? "leon" : req.body.requester;
-
-    // calculates the lunar date.
-    var {date, lunarDate} = getLunarTime(new Date()); 
-    var lMonth = lunarDate["lunarMonth"];
-    var lDate = lunarDate["lunarDate"];
-
-    // calculate the Xiao Liu Ren index.
-    var index = count(lMonth + lDate + getShiChen(date.getHours()) - 2);
-
-    // store this attemp!
-    new Xiaoliuren({
-        result: index,
-        lunar_time: lunarDate,
-        requester: requester
-    })
-    .save()
-    .then((result) => {
-        console.log(result);
-        res.send("<h1>" + map[index] + "</h1>");
-    })
-    .catch((error) => console.log(error));
-});
+// register the routers
+// we can use app.use(<uri>, <router>) to further scope the routings
+app.use(xiaoliurenRoutes);
 
 // unknow uris?
 app.use((req, res) => {
